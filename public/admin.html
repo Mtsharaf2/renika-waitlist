@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RENiKA — Admin</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='38' fill='%23F26B7A'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin">
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="admin-header">
+    <div class="brand">RENiKA <span>admin</span></div>
+    <div class="actions">
+      <button id="refresh" type="button">Refresh</button>
+      <a class="back" href="/">← Back to site</a>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <section id="gate" class="gate" hidden>
+      <h1>Admin access</h1>
+      <p>This dashboard contains waitlist emails. Enter the admin passcode to continue.</p>
+      <form id="gate-form" novalidate>
+        <input id="passcode" type="password" placeholder="Passcode" autocomplete="current-password" aria-label="Admin passcode">
+        <button type="submit" class="primary">Unlock</button>
+      </form>
+      <p id="gate-error" class="form-error" role="alert"></p>
+      <p class="hint">Set the ADMIN_PASSCODE environment variable to protect this page.</p>
+    </section>
+
+    <section id="dashboard" hidden>
+      <div class="cards">
+        <div class="card"><p class="num accent" id="stat-total">0</p><p class="label">Total signups</p></div>
+        <div class="card"><p class="num" id="stat-today">0</p><p class="label">Today</p></div>
+        <div class="card"><p class="num" id="stat-week">0</p><p class="label">Last 7 days</p></div>
+      </div>
+
+      <div class="panel">
+        <h2>Signups over time — last 30 days</h2>
+        <div class="chart-box">
+          <canvas id="chart"></canvas>
+          <div id="chart-tip" class="chart-tip"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Waitlist</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>#</th><th>Email</th><th>Signed up</th></tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
