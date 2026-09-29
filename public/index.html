@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>RENiKA — Deterministic, auditable CKD decision support</title>
+  <meta name="description" content="RENiKA is guideline-grounded clinical decision support for nephrologists and clinicians managing CKD. Every recommendation shows its rule, inputs, guideline version and citation (KDIGO, ESC/ERA). Join the waitlist.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='38' fill='%23F26B7A'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- floating kidneys (shape from the Nephrite artifact) -->
+  <div class="float-layer" aria-hidden="true">
+    <svg class="floater" style="top:7%; right:4%; width:42px; --dur:8s; --delay:0s; --rot:7deg; --dx:12px; opacity:.5;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="4"/>
+    </svg>
+    <svg class="floater" style="top:15%; left:2.5%; width:30px; --dur:6.5s; --delay:-2s; --rot:-9deg; --dx:9px; opacity:.35;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="4"/>
+    </svg>
+    <svg class="floater" style="bottom:12%; left:3%; width:38px; --dur:7.4s; --delay:-1.1s; --rot:-5deg; --dx:-11px; opacity:.45;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="4"/>
+    </svg>
+    <svg class="floater" style="bottom:16%; right:2.5%; width:26px; --dur:9s; --delay:-4.2s; --rot:11deg; --dx:8px; opacity:.3;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="4"/>
+    </svg>
+    <svg class="floater" style="top:46%; right:1.6%; width:22px; --dur:6s; --delay:-3s; --rot:-12deg; --dx:7px; opacity:.25;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="4"/>
+    </svg>
+
+    <!-- friendly hero mascot with a face -->
+    <svg class="floater mascot" style="bottom:5%; left:42%; width:104px; --dur:9.5s; --delay:-2.6s; --rot:-4deg; --dx:-14px; opacity:.95;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="5"/>
+      <circle cx="118" cy="150" r="12" fill="#2b1512"/>
+      <circle cx="182" cy="146" r="12" fill="#2b1512"/>
+      <circle cx="122" cy="145.5" r="3.6" fill="#fff"/>
+      <circle cx="186" cy="141.5" r="3.6" fill="#fff"/>
+      <path d="M112 205 Q150 232 190 200" stroke="#5c2f27" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <ellipse cx="96" cy="185" rx="15" ry="9" fill="#c9695b" opacity="0.55"/>
+      <ellipse cx="204" cy="178" rx="15" ry="9" fill="#c9695b" opacity="0.55"/>
+    </svg>
+
+    <!-- KDIGO logo (simplified) -->
+    <svg class="floater" style="top:22%; right:2%; width:120px; --dur:11s; --delay:-5s; --rot:3deg; --dx:10px; opacity:.28;" viewBox="0 0 200 200">
+      <defs>
+        <path id="kdigo-circle" d="M 100,100 m -78,0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0"/>
+      </defs>
+      <circle cx="100" cy="100" r="72" fill="#1a7a4a"/>
+      <g stroke="#fff" stroke-width="1" fill="none" opacity="0.7">
+        <ellipse cx="100" cy="100" rx="72" ry="28"/>
+        <ellipse cx="100" cy="100" rx="72" ry="52"/>
+        <ellipse cx="100" cy="100" rx="28" ry="72"/>
+        <ellipse cx="100" cy="100" rx="52" ry="72"/>
+        <line x1="28" y1="100" x2="172" y2="100"/>
+        <line x1="100" y1="28" x2="100" y2="172"/>
+      </g>
+      <text font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#1a3a6b">
+        <textPath href="#kdigo-circle" startOffset="0%">KIDNEY DISEASE · IMPROVING GLOBAL OUTCOMES ·</textPath>
+      </text>
+      <text x="100" y="118" text-anchor="middle" font-family="Arial,sans-serif" font-size="38" font-weight="900" fill="#1a3a6b">KDIGO</text>
+    </svg>
+
+    <!-- ERA logo (simplified) -->
+    <svg class="floater" style="bottom:22%; right:3%; width:110px; --dur:10s; --delay:-3.5s; --rot:-3deg; --dx:-12px; opacity:.25;" viewBox="0 0 220 90">
+      <defs>
+        <linearGradient id="era-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#f7941e"/>
+          <stop offset="50%" stop-color="#e83e8c"/>
+          <stop offset="100%" stop-color="#9b59b6"/>
+        </linearGradient>
+      </defs>
+      <text x="110" y="46" text-anchor="middle" font-family="Arial,sans-serif" font-size="50" font-weight="900" fill="url(#era-grad)">ERA</text>
+      <text x="110" y="76" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="600" fill="#999" letter-spacing="1">EUROPEAN RENAL ASSOCIATION</text>
+    </svg>
+  </div>
+
+  <main class="hero">
+    <div class="stage-wrap">
+      <div class="stage">
+        <div class="stage-sheen"></div>
+        <div class="stage-side-btn"></div>
+        <svg id="svg" viewBox="0 0 600 1000" role="img" aria-label="A small kidney draws the letter R, RENiKA slides in, and the kidney lands as the dot of the i.">
+          <g id="word" transform="translate(72 450)" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+            <g id="R">
+              <path id="rA" d="M0,100 V0 H26 C54,0 66,10 66,27 C66,44 54,54 26,54 H0"/>
+              <path id="rB" d="M26,54 L62,100"/>
+            </g>
+            <g transform="translate(96 0)"><g class="L"><path d="M50,0 H0 V100 H50 M0,50 H38"/></g></g>
+            <g transform="translate(176 0)"><g class="L"><path d="M0,100 V0 L62,100 V0"/></g></g>
+            <g transform="translate(268 0)"><g class="L"><path d="M0,34 V100"/></g></g>
+            <g transform="translate(298 0)"><g class="L"><path d="M0,0 V100 M62,0 L2,58 M21,40 L62,100"/></g></g>
+            <g transform="translate(386 0)"><g class="L"><path d="M0,100 L35,0 L70,100 M11,68 H59"/></g></g>
+          </g>
+
+          <text id="tag" x="300" y="620" text-anchor="middle" font-size="21" fill="#8FB0B0" opacity="0"
+                font-family="'Bricolage Grotesque', system-ui, sans-serif">Where renal evidence meets practice.</text>
+
+          <circle id="ring" r="12" fill="none" stroke="#F26B7A" stroke-width="2" opacity="0"/>
+          <path id="pen" fill="#F26B7A" stroke="#0C2A33" stroke-width="2.5" stroke-linejoin="round"
+                d="M0,-13 C8,-13 12,-6 12,0 C12,7 8,13 0,13 C-6,13 -9,9 -8,5 C-7,2 -3,2 -3,0 C-3,-2 -7,-2 -8,-5 C-9,-9 -6,-13 0,-13 Z"/>
+        </svg>
+      </div>
+    </div>
+
+    <section class="content">
+      <p class="eyebrow">Coming soon · For nephrologists &amp; CKD clinicians</p>
+      <h1 class="tagline">CKD decision support that <em>shows its work.</em></h1>
+      <p class="sub">RENiKA is deterministic, auditable decision support for clinicians managing chronic kidney disease. Every recommendation is grounded in KDIGO and ESC/ERA guidelines and shows the rule it fired, the inputs it used, the guideline version and the citation — no black box, no generated text.</p>
+      <ul class="proof" aria-label="What every recommendation shows">
+        <li>Rule</li>
+        <li>Inputs</li>
+        <li>Guideline version</li>
+        <li>Citation</li>
+      </ul>
+
+      <form id="waitlist-form" class="waitlist-form" novalidate>
+        <input id="email" type="email" placeholder="you@hospital.org" autocomplete="email" required aria-label="Email address">
+        <button id="submit-btn" type="submit" class="primary">Join the waitlist</button>
+      </form>
+      <p id="form-error" class="form-error" role="alert"></p>
+
+      <div id="reveal" class="reveal" hidden>
+        <p class="you-are" id="reveal-lead">You are</p>
+        <p class="position"><span id="position-num">#0</span></p>
+        <p class="on-list">on the waitlist.</p>
+        <p class="confirm" id="confirm-line">We've sent a confirmation to <strong id="confirm-email"></strong>.</p>
+      </div>
+
+      <p class="counter"><strong id="count">—</strong> people already in line</p>
+      <p class="fine">No spam. One email when we launch. <a class="see-example" href="#worked-example">See a worked example ↓</a></p>
+    </section>
+  </main>
+
+  <section class="example fade-in" id="worked-example" aria-labelledby="example-title">
+    <div class="example-head">
+      <p class="eyebrow">Worked example</p>
+      <h2 id="example-title">One case, traced <em>end to end.</em></h2>
+      <p class="example-intro">This is how RENiKA presents a recommendation: the inputs go in, a named rule fires, and the output arrives with the guideline version and citation attached — so it can be checked, audited and defended at the bedside.</p>
+    </div>
+
+    <ol class="trace">
+      <li class="trace-step">
+        <p class="step-label"><span class="step-num">1</span> Inputs</p>
+        <dl class="inputs">
+          <div><dt>Patient</dt><dd>62-year-old with type 2 diabetes, BP 134/82 mmHg</dd></div>
+          <div><dt>eGFR (CKD-EPI 2021)</dt><dd>38 mL/min/1.73 m², stable across two readings &gt; 90 days apart</dd></div>
+          <div><dt>Urine ACR</dt><dd>450 mg/g (≈ 51 mg/mmol)</dd></div>
+          <div><dt>Current therapy</dt><dd>Metformin, ramipril at maximum tolerated dose; no SGLT2 inhibitor</dd></div>
+        </dl>
+      </li>
+
+      <li class="trace-step">
+        <p class="step-label"><span class="step-num">2</span> Rule</p>
+        <code class="rule-id">CKD.STAGE.CGA → CKD.T2D.SGLT2I.EGFR≥20</code>
+        <p class="rule-text">eGFR 30–44 → <strong>G3b</strong>. ACR &gt; 300 mg/g → <strong>A3</strong>. Classified <strong>CKD G3b A3</strong> (very high risk). Condition <em>type 2 diabetes AND CKD AND eGFR ≥ 20</em> is satisfied and no exclusion (type 1 diabetes, kidney transplant, dialysis) applies — the SGLT2 inhibitor rule fires.</p>
+      </li>
+
+      <li class="trace-step">
+        <p class="step-label"><span class="step-num">3</span> Recommendation</p>
+        <p class="rec">Start an SGLT2 inhibitor (e.g. dapagliflozin 10 mg or empagliflozin 10 mg once daily) alongside the existing RAS inhibitor. Once started, continuing is reasonable even if eGFR later falls below 20, unless not tolerated or kidney replacement therapy begins.</p>
+        <p class="rec-grade"><span>Strength 1 — strong</span><span>Evidence A — high</span></p>
+      </li>
+
+      <li class="trace-step">
+        <p class="step-label"><span class="step-num">4</span> Citation</p>
+        <p class="cite">KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease — Recommendation 3.7.1 and Practice Point 3.7.1; CGA staging, Section 1.2. <em>Kidney Int.</em> 2024;105(4S):S117–S314.</p>
+        <p class="cite cite-secondary">Corroborating: ESC 2023 Guidelines for the management of cardiovascular disease in patients with diabetes — SGLT2 inhibitor in T2D with CKD, Class I, Level A.</p>
+        <p class="version"><span>Guideline version</span> KDIGO CKD 2024 (April 2024)</p>
+      </li>
+    </ol>
+
+    <p class="disclaimer">Illustrative example only. This is a fictional case used to demonstrate how RENiKA structures its output; it is not medical advice and must not be used to make decisions about real patients. Always apply clinical judgement and the current version of the relevant guideline.</p>
+  </section>
+
+  <footer class="site-footer">
+    <span>© 2026 RENiKA</span>
+    <a href="/admin.html">Admin</a>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

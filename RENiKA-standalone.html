@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>RENiKA — Where renal evidence meets practice</title>
+  <meta name="description" content="RENiKA is coming soon. Reserve your place on the waitlist.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='38' fill='%23F26B7A'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --page: #071A20;
+      --panel: #0F2A33;
+      --text: #E4EFEC;
+      --muted: #8FB0B0;
+      --line: #1E4450;
+      --accent: #F26B7A;
+      --accent-deep: #C93B52;
+      --accent-ink: #0C2A33;
+      --danger: #F26B7A;
+      --radius: 18px;
+      --font: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .glow {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(60% 50% at 32% 46%, rgba(242,107,122,0.10), transparent 70%),
+        radial-gradient(50% 40% at 78% 20%, rgba(30,68,80,0.55), transparent 70%),
+        radial-gradient(45% 40% at 70% 85%, rgba(201,59,82,0.06), transparent 70%);
+    }
+    .grain {
+      position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.05;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    }
+    .float-layer { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 3; }
+    .floater {
+      position: absolute;
+      animation: bob var(--dur,7s) ease-in-out infinite;
+      animation-delay: var(--delay,0s);
+      filter: drop-shadow(0 10px 26px rgba(242,107,122,0.16));
+      will-change: transform;
+    }
+    @keyframes bob {
+      0%,100% { transform: translate(0,0) rotate(var(--rot,0deg)); }
+      50% { transform: translate(var(--dx,10px),-18px) rotate(calc(var(--rot,0deg) * -1)); }
+    }
+    button {
+      font: inherit; font-size: 0.95rem; font-weight: 600; color: var(--text);
+      background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
+      padding: 10px 22px; cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+    }
+    button:hover { border-color: var(--accent); }
+    button:active { transform: translateY(1px); }
+    button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    button.primary:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+    input[type="email"] {
+      font: inherit; color: var(--text); background: rgba(12,42,51,0.6);
+      border: 1px solid var(--line); border-radius: 999px; padding: 12px 20px; width: 100%;
+    }
+    input::placeholder { color: rgba(143,176,176,0.55); }
+    .hero {
+      position: relative; z-index: 2; min-height: 100vh; min-height: 100svh;
+      display: grid; grid-template-columns: minmax(0,5fr) minmax(0,6fr); align-items: center;
+      gap: clamp(24px,5vw,72px); max-width: 1240px; margin: 0 auto;
+      padding: clamp(24px,5vh,64px) clamp(20px,4vw,48px);
+    }
+    .stage-wrap { display: flex; justify-content: center; }
+    .stage {
+      --s-bg: #0C2A33; --s-ink: #EAF2EF; --s-rose: #F26B7A; --s-muted: #8FB0B0;
+      height: min(64vh,620px); aspect-ratio: 3/5; max-width: 100%; border-radius: 28px;
+      overflow: hidden; background: var(--s-bg); border: 1px solid var(--line);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 120px rgba(242,107,122,0.05);
+    }
+    .stage svg { display: block; width: 100%; height: 100%; overflow: hidden; }
+    .stage .L path { stroke: var(--s-ink); }
+    .content { max-width: 560px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; margin: 0 0 18px;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+    }
+    .eyebrow::before {
+      content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+      box-shadow: 0 0 12px var(--accent); animation: blink 2.4s ease-in-out infinite;
+    }
+    @keyframes blink { 50% { opacity: 0.35; } }
+    .tagline { margin: 0 0 16px; font-size: clamp(2.4rem,4.6vw,3.9rem); font-weight: 800; line-height: 1.04; letter-spacing: -0.02em; }
+    .tagline em { font-style: normal; color: var(--accent); }
+    .sub { margin: 0 0 32px; color: var(--muted); font-size: 1.05rem; max-width: 44ch; }
+    .waitlist-form {
+      display: flex; gap: 10px; padding: 6px; background: rgba(15,42,51,0.7);
+      border: 1px solid var(--line); border-radius: 999px; backdrop-filter: blur(6px);
+    }
+    .waitlist-form input { flex: 1; min-width: 0; border: none; background: transparent; padding: 8px 14px; }
+    .waitlist-form input:focus-visible { outline: none; }
+    .waitlist-form button { flex-shrink: 0; }
+    .waitlist-form.error { border-color: var(--danger); animation: shake 0.4s ease; }
+    @keyframes shake { 20%,60% { transform: translateX(-6px); } 40%,80% { transform: translateX(6px); } }
+    .form-error { margin: 10px 4px 0; color: var(--accent); font-size: 0.88rem; min-height: 1.2em; }
+    .counter { margin: 18px 4px 0; color: var(--muted); font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+    .counter strong { color: var(--text); font-weight: 600; }
+    .fine { margin: 26px 4px 0; color: rgba(143,176,176,0.55); font-size: 0.8rem; }
+    .reveal { text-align: left; padding: 8px 4px; }
+    .reveal .you-are { margin: 0; color: var(--muted); font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .reveal .position {
+      position: relative; display: inline-block; margin: 4px 0 0;
+      font-size: clamp(4.5rem,11vw,8.5rem); font-weight: 800; line-height: 1;
+      letter-spacing: -0.04em; color: var(--accent); font-variant-numeric: tabular-nums;
+    }
+    .reveal .position::after {
+      content: ""; position: absolute; inset: -30px -40px; border-radius: 50%;
+      border: 1px solid rgba(242,107,122,0.35); animation: ring-out 1.6s ease-out infinite; pointer-events: none;
+    }
+    .reveal .position::before {
+      content: ""; position: absolute; inset: -30px -40px; border-radius: 50%;
+      border: 1px solid rgba(242,107,122,0.25); animation: ring-out 1.6s ease-out 0.55s infinite; pointer-events: none;
+    }
+    @keyframes ring-out { from { transform: scale(0.55); opacity: 0.9; } to { transform: scale(1.25); opacity: 0; } }
+    .reveal .on-list { margin: 6px 0 18px; font-size: clamp(1.4rem,2.6vw,2rem); font-weight: 600; }
+    .reveal .confirm { margin: 0; color: var(--muted); font-size: 0.95rem; }
+    .reveal .confirm strong { color: var(--text); font-weight: 600; word-break: break-all; }
+    .site-footer {
+      position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 12px;
+      max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px,4vw,48px) 28px;
+      color: rgba(143,176,176,0.5); font-size: 0.8rem;
+    }
+    .site-footer a { color: rgba(143,176,176,0.65); text-decoration: none; }
+    .site-footer a:hover { color: var(--accent); }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 16px; min-height: auto; padding-top: 16px; padding-bottom: 16px; }
+      .stage { height: auto; width: min(42%,150px); aspect-ratio: 3/5; }
+      .content { max-width: 100%; }
+      .eyebrow { font-size: 0.7rem; margin-bottom: 10px; }
+      .tagline { font-size: clamp(1.5rem,6vw,2rem); margin-bottom: 10px; }
+      .sub { font-size: 0.88rem; margin-bottom: 16px; }
+      .waitlist-form { flex-direction: column; border-radius: 20px; padding: 6px; }
+      .waitlist-form input { padding: 10px 14px; }
+      .waitlist-form button { width: 100%; padding: 12px; }
+      .counter { margin-top: 12px; font-size: 0.85rem; }
+      .fine { margin-top: 14px; }
+      .site-footer { flex-direction: column; gap: 4px; }
+      .reveal .position { font-size: clamp(3rem,15vw,4.5rem); }
+      .reveal .on-list { font-size: 1.1rem; }
+    }
+    @media (max-width: 900px) {
+      .floater { filter: none; }
+      .floater.mascot { left: auto !important; right: 4%; bottom: 3%; width: 56px; opacity: .7; }
+      .floater[viewBox="0 0 200 200"], .floater[viewBox="0 0 220 90"] { display: none; }
+      .floater[style*="width:42px"], .floater[style*="width:30px"],
+      .floater[style*="width:38px"], .floater[style*="width:26px"],
+      .floater[style*="width:22px"] { opacity: 0.2; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .eyebrow::before, .reveal .position::before, .reveal .position::after, .floater { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="float-layer" aria-hidden="true">
+    <svg class="floater" style="top:7%; right:4%; width:42px; --dur:8s; --delay:0s; --rot:7deg; --dx:12px; opacity:.5;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="4"/>
+    </svg>
+    <svg class="floater" style="top:15%; left:2.5%; width:30px; --dur:6.5s; --delay:-2s; --rot:-9deg; --dx:9px; opacity:.35;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="4"/>
+    </svg>
+    <svg class="floater" style="bottom:12%; left:3%; width:38px; --dur:7.4s; --delay:-1.1s; --rot:-5deg; --dx:-11px; opacity:.45;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="4"/>
+    </svg>
+    <svg class="floater" style="bottom:16%; right:2.5%; width:26px; --dur:9s; --delay:-4.2s; --rot:11deg; --dx:8px; opacity:.3;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="4"/>
+    </svg>
+    <svg class="floater" style="top:46%; right:1.6%; width:22px; --dur:6s; --delay:-3s; --rot:-12deg; --dx:7px; opacity:.25;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="4"/>
+    </svg>
+    <svg class="floater mascot" style="bottom:5%; left:42%; width:104px; --dur:9.5s; --delay:-2.6s; --rot:-4deg; --dx:-14px; opacity:.95;" viewBox="0 0 320 360">
+      <path d="M168,10 C240,8 286,54 286,116 C286,146 264,160 246,174 C226,188 226,204 246,218 C268,236 290,254 288,278 C284,330 232,352 166,352 C92,352 30,318 30,232 C30,132 84,12 168,10 Z" fill="#E8877A" stroke="#8a4a3f" stroke-width="5"/>
+      <circle cx="118" cy="150" r="12" fill="#2b1512"/>
+      <circle cx="182" cy="146" r="12" fill="#2b1512"/>
+      <circle cx="122" cy="145.5" r="3.6" fill="#fff"/>
+      <circle cx="186" cy="141.5" r="3.6" fill="#fff"/>
+      <path d="M112 205 Q150 232 190 200" stroke="#5c2f27" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <ellipse cx="96" cy="185" rx="15" ry="9" fill="#c9695b" opacity="0.55"/>
+      <ellipse cx="204" cy="178" rx="15" ry="9" fill="#c9695b" opacity="0.55"/>
+    </svg>
+    <svg class="floater" style="top:22%; right:2%; width:120px; --dur:11s; --delay:-5s; --rot:3deg; --dx:10px; opacity:.28;" viewBox="0 0 200 200">
+      <defs>
+        <path id="kdigo-circle" d="M 100,100 m -78,0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0"/>
+      </defs>
+      <circle cx="100" cy="100" r="72" fill="#1a7a4a"/>
+      <g stroke="#fff" stroke-width="1" fill="none" opacity="0.7">
+        <ellipse cx="100" cy="100" rx="72" ry="28"/>
+        <ellipse cx="100" cy="100" rx="72" ry="52"/>
+        <ellipse cx="100" cy="100" rx="28" ry="72"/>
+        <ellipse cx="100" cy="100" rx="52" ry="72"/>
+        <line x1="28" y1="100" x2="172" y2="100"/>
+        <line x1="100" y1="28" x2="100" y2="172"/>
+      </g>
+      <text font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#1a3a6b">
+        <textPath href="#kdigo-circle" startOffset="0%">KIDNEY DISEASE · IMPROVING GLOBAL OUTCOMES ·</textPath>
+      </text>
+      <text x="100" y="118" text-anchor="middle" font-family="Arial,sans-serif" font-size="38" font-weight="900" fill="#1a3a6b">KDIGO</text>
+    </svg>
+    <svg class="floater" style="bottom:22%; right:3%; width:110px; --dur:10s; --delay:-3.5s; --rot:-3deg; --dx:-12px; opacity:.25;" viewBox="0 0 220 90">
+      <defs>
+        <linearGradient id="era-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#f7941e"/>
+          <stop offset="50%" stop-color="#e83e8c"/>
+          <stop offset="100%" stop-color="#9b59b6"/>
+        </linearGradient>
+      </defs>
+      <text x="110" y="46" text-anchor="middle" font-family="Arial,sans-serif" font-size="50" font-weight="900" fill="url(#era-grad)">ERA</text>
+      <text x="110" y="76" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="600" fill="#999" letter-spacing="1">EUROPEAN RENAL ASSOCIATION</text>
+    </svg>
+  </div>
+
+  <main class="hero">
+    <div class="stage-wrap">
+      <div class="stage">
+        <svg id="svg" viewBox="0 0 600 1000" role="img" aria-label="A small kidney draws the letter R, RENiKA slides in, and the kidney lands as the dot of the i.">
+          <g id="word" transform="translate(72 450)" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+            <g id="R">
+              <path id="rA" d="M0,100 V0 H26 C54,0 66,10 66,27 C66,44 54,54 26,54 H0"/>
+              <path id="rB" d="M26,54 L62,100"/>
+            </g>
+            <g transform="translate(96 0)"><g class="L"><path d="M50,0 H0 V100 H50 M0,50 H38"/></g></g>
+            <g transform="translate(176 0)"><g class="L"><path d="M0,100 V0 L62,100 V0"/></g></g>
+            <g transform="translate(268 0)"><g class="L"><path d="M0,34 V100"/></g></g>
+            <g transform="translate(298 0)"><g class="L"><path d="M0,0 V100 M62,0 L2,58 M21,40 L62,100"/></g></g>
+            <g transform="translate(386 0)"><g class="L"><path d="M0,100 L35,0 L70,100 M11,68 H59"/></g></g>
+          </g>
+          <text id="tag" x="300" y="620" text-anchor="middle" font-size="21" fill="#8FB0B0" opacity="0"
+                font-family="'Bricolage Grotesque', system-ui, sans-serif">Where renal evidence meets practice.</text>
+          <circle id="ring" r="12" fill="none" stroke="#F26B7A" stroke-width="2" opacity="0"/>
+          <path id="pen" fill="#F26B7A" stroke="#0C2A33" stroke-width="2.5" stroke-linejoin="round"
+                d="M0,-13 C8,-13 12,-6 12,0 C12,7 8,13 0,13 C-6,13 -9,9 -8,5 C-7,2 -3,2 -3,0 C-3,-2 -7,-2 -8,-5 C-9,-9 -6,-13 0,-13 Z"/>
+        </svg>
+      </div>
+    </div>
+
+    <section class="content">
+      <p class="eyebrow">Coming soon</p>
+      <h1 class="tagline">Where renal evidence <em>meets</em> practice.</h1>
+      <p class="sub">RENiKA is clinical decision support for nephrologists — turning the latest renal evidence into answers at the point of care. Reserve your place at the front of the line.</p>
+      <form id="waitlist-form" class="waitlist-form" novalidate>
+        <input id="email" type="email" placeholder="you@hospital.org" autocomplete="email" required aria-label="Email address">
+        <button id="submit-btn" type="submit" class="primary">Join the waitlist</button>
+      </form>
+      <p id="form-error" class="form-error" role="alert"></p>
+      <div id="reveal" class="reveal" hidden>
+        <p class="you-are" id="reveal-lead">You are</p>
+        <p class="position"><span id="position-num">#0</span></p>
+        <p class="on-list">on the waitlist.</p>
+        <p class="confirm" id="confirm-line">We've sent a confirmation to <strong id="confirm-email"></strong>.</p>
+      </div>
+      <p class="counter"><strong id="count">—</strong> people already in line</p>
+      <p class="fine">No spam. One email when we launch.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>© 2026 RENiKA</span>
+    <a href="#" onclick="return false">Admin</a>
+  </footer>
+
+  <script>
+    window.API_BASE = '';
+  </script>
+  <script>
+    (() => {
+      'use strict';
+      const $ = (s) => document.querySelector(s);
+      const rA = $('#rA'), rB = $('#rB'), R = $('#R'), pen = $('#pen'), ring = $('#ring'), tag = $('#tag');
+      const letters = [...document.querySelectorAll('.L')];
+      const ROSE = '#F26B7A', INK = '#EAF2EF';
+      const WORD_X = 72, WORD_Y = 450;
+      const R_OFF = 195;
+      const D = 460;
+      const I_X = 268;
+      const T = { A0: 280, A1: 880, B0: 950, B1: 1110, P0: 1200, P1: 1800, F0: 1560, F1: 2040, END: 2340 };
+      const HOLD = 2600;
+      const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+      const prog = (t, a, b) => clamp((t - a) / (b - a));
+      const E = {
+        out: (p) => 1 - Math.pow(1 - p, 3),
+        out4: (p) => 1 - Math.pow(1 - p, 4),
+        io: (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2),
+        ios: (p) => -(Math.cos(Math.PI * p) - 1) / 2,
+      };
+      const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+      const mix = (a, b, k) => {
+        const x = hex(a), y = hex(b);
+        return 'rgb(' + x.map((v, i) => Math.round(v + (y[i] - v) * k)).join(',') + ')';
+      };
+      const LA = rA.getTotalLength(), LB = rB.getTotalLength();
+      rA.style.strokeDasharray = LA;
+      rB.style.strokeDasharray = LB;
+      let t = 0, last = performance.now();
+      const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) t = T.END;
+
+      function render(t) {
+        const offE = D * (1 - E.out4(prog(t, T.P0, T.P1)));
+        const rOff = Math.min(R_OFF, offE);
+        R.setAttribute('transform', `translate(${rOff} 0)`);
+        letters.forEach((el, i) => {
+          const p = prog(t, T.P0 + i * 30, T.P1 + i * 30);
+          el.setAttribute('transform', `translate(${D * (1 - E.out4(p))} 0)`);
+        });
+        const pA = E.ios(prog(t, T.A0, T.A1));
+        const pB = E.ios(prog(t, T.B0, T.B1));
+        rA.style.strokeDashoffset = LA * (1 - pA);
+        rB.style.strokeDashoffset = LB * (1 - pB);
+        rA.style.strokeOpacity = pA > 0 ? 1 : 0;
+        rB.style.strokeOpacity = pB > 0 ? 1 : 0;
+        const col = mix(ROSE, INK, E.ios(prog(t, T.P0 + 80, T.P1)));
+        rA.style.stroke = col;
+        rB.style.stroke = col;
+        const W = (lx, ly) => [WORD_X + rOff + lx, WORD_Y + ly];
+        const foot = W(62, 100);
+        const target = [WORD_X + I_X, WORD_Y + 2];
+        let x, y, sx = 0.8, sy = 0.8, rot = -18;
+        if (t < T.A0) {
+          const p = E.out(prog(t, 0, T.A0));
+          const s = W(0, 100);
+          x = -30 + (s[0] + 30) * p;
+          y = s[1] + 90 * (1 - p);
+        } else if (t < T.A1) {
+          const pt = rA.getPointAtLength(pA * LA);
+          [x, y] = W(pt.x, pt.y);
+        } else if (t < T.B0) {
+          const p = E.ios(prog(t, T.A1, T.B0));
+          const a = W(0, 54), b = W(26, 54);
+          x = a[0] + (b[0] - a[0]) * p;
+          y = a[1] + (b[1] - a[1]) * p - 12 * Math.sin(Math.PI * p);
+        } else if (t < T.F0) {
+          if (t < T.B1) {
+            const pt = rB.getPointAtLength(pB * LB);
+            [x, y] = W(pt.x, pt.y);
+          } else { [x, y] = foot; }
+        } else if (t < T.F1) {
+          const e = E.io(prog(t, T.F0, T.F1));
+          x = foot[0] + (target[0] - foot[0]) * e;
+          y = foot[1] + (target[1] - foot[1]) * e - 110 * Math.sin(Math.PI * e);
+          sx = sy = 0.8 + 0.2 * e;
+          rot = -18 + 35 * Math.sin(Math.PI * e);
+        } else {
+          const q = prog(t, T.F1, T.END), d = 1 - q;
+          const sq = 0.22 * Math.cos(q * Math.PI * 3) * d * d;
+          x = target[0];
+          y = target[1] - Math.abs(Math.sin(q * Math.PI * 2.2)) * 9 * d;
+          sx = 1 + sq; sy = 1 - sq;
+        }
+        pen.setAttribute('transform', `translate(${x} ${y}) rotate(${rot}) scale(${sx} ${sy})`);
+        const rt = t - (T.END - 100);
+        if (rt > 0 && !reduce) {
+          const ph = (rt % 1800) / 1800;
+          ring.setAttribute('cx', target[0]);
+          ring.setAttribute('cy', target[1]);
+          ring.setAttribute('r', 12 + 24 * ph);
+          ring.style.opacity = 0.5 * (1 - ph);
+        } else { ring.style.opacity = 0; }
+        tag.style.opacity = E.out(prog(t, T.F1 - 100, T.F1 + 500));
+      }
+
+      function frame(now) {
+        const dt = Math.min(now - last, 100);
+        last = now;
+        if (!reduce) { t += dt; if (t > T.END + HOLD) t = 0; }
+        render(t);
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+
+      const API = window.API_BASE || '';
+      const form = $('#waitlist-form');
+      const emailInput = $('#email');
+      const submitBtn = $('#submit-btn');
+      const formError = $('#form-error');
+      const reveal = $('#reveal');
+      const revealLead = $('#reveal-lead');
+      const positionNum = $('#position-num');
+      const confirmLine = $('#confirm-line');
+      const confirmEmail = $('#confirm-email');
+      const countEl = $('#count');
+
+      function setCount(n) { countEl.textContent = n.toLocaleString('en-US'); }
+
+      async function loadCount() {
+        try {
+          const res = await fetch(API + '/api/count');
+          const data = await res.json();
+          setCount(data.total);
+        } catch { countEl.textContent = '—'; }
+      }
+      loadCount();
+
+      function countUp(el, to, duration = 1400) {
+        const start = performance.now();
+        function tick(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 4);
+          el.textContent = '#' + Math.round(to * eased).toLocaleString('en-US');
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      function showReveal({ position, email, already }) {
+        form.hidden = true;
+        formError.textContent = '';
+        revealLead.textContent = already ? "You're already" : 'You are';
+        confirmLine.hidden = false;
+        confirmEmail.textContent = email;
+        reveal.hidden = false;
+        countUp(positionNum, position);
+        loadCount();
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        formError.textContent = '';
+        form.classList.remove('error');
+        const email = emailInput.value.trim();
+        if (!email) {
+          formError.textContent = 'Please enter your email address.';
+          form.classList.add('error');
+          emailInput.focus();
+          return;
+        }
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Joining…';
+        try {
+          const res = await fetch(API + '/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.status === 409) { showReveal({ position: data.position, email, already: true }); return; }
+          if (!res.ok) { formError.textContent = data.error || 'Something went wrong. Please try again.'; form.classList.add('error'); return; }
+          showReveal({ position: data.position, email, already: false });
+        } catch {
+          formError.textContent = 'Network error — please try again.';
+          form.classList.add('error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Join the waitlist';
+        }
+      });
+
+      emailInput.addEventListener('input', () => {
+        formError.textContent = '';
+        form.classList.remove('error');
+      });
+    })();
+  </script>
+</body>
+</html>
