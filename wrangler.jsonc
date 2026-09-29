@@ -12,7 +12,7 @@
     {
       "binding": "DB",
       "database_name": "renika-waitlist",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "f396b8da-28c6-41ad-ab48-e00ec2dcabe8",
       "migrations_dir": "migrations"
     }
   ],
