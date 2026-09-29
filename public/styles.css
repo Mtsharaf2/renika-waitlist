@@ -234,34 +234,10 @@ input::placeholder { color: rgba(143, 176, 176, 0.55); }
 }
 
 .sub {
-  margin: 0 0 32px;
+  margin: 0 0 28px;
   color: var(--muted);
   font-size: 1.05rem;
   max-width: 44ch;
-}
-
-.proof {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: -12px 0 28px;
-  padding: 0;
-  list-style: none;
-}
-.proof li {
-  font-size: 0.76rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 5px 12px;
-}
-.proof li::before {
-  content: "✓";
-  margin-right: 6px;
-  color: var(--accent);
 }
 
 /* form */
@@ -725,8 +701,6 @@ tbody tr:hover { background: rgba(30, 68, 80, 0.25); }
   .eyebrow { font-size: 0.7rem; margin-bottom: 10px; }
   .tagline { font-size: clamp(1.5rem, 6vw, 2rem); margin-bottom: 10px; }
   .sub { font-size: 0.88rem; margin-bottom: 16px; }
-  .proof { margin: -4px 0 18px; gap: 6px; }
-  .proof li { font-size: 0.68rem; padding: 4px 10px; }
   .waitlist-form {
     flex-direction: column;
     border-radius: 20px;
