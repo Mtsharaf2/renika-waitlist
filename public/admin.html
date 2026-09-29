@@ -30,7 +30,12 @@
         <button type="submit" class="primary">Unlock</button>
       </form>
       <p id="gate-error" class="form-error" role="alert"></p>
-      <p class="hint">Set the ADMIN_PASSCODE environment variable to protect this page.</p>
+      <p class="hint">The passcode is the server's ADMIN_PASSCODE environment variable.</p>
+    </section>
+
+    <section id="locked" class="gate" hidden>
+      <h1>Dashboard locked</h1>
+      <p>ADMIN_PASSCODE is not set on the server, so stats and emails are not served to anyone. Configure it as a server environment variable (or a Cloudflare Worker secret), restart or redeploy, and reload this page.</p>
     </section>
 
     <section id="dashboard" hidden>
@@ -49,11 +54,52 @@
       </div>
 
       <div class="panel">
+        <h2>Funnel events</h2>
+        <p class="panel-sub">Recorded server-side from the landing page. No cookies, no third parties.</p>
+        <div class="table-wrap">
+          <table class="events-table">
+            <thead>
+              <tr><th>Event</th><th class="num-col">Total</th><th class="num-col">Last 7 days</th><th class="num-col">Today</th><th class="num-col">Per page view</th></tr>
+            </thead>
+            <tbody id="event-rows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="panel">
+          <h2>Signup sources</h2>
+          <p class="panel-sub">From <code>utm_*</code> (or <code>?source=</code>) on the visitor's first page.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Source</th><th>Medium</th><th>Campaign</th><th class="num-col">Signups</th></tr>
+              </thead>
+              <tbody id="source-rows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Top referrers</h2>
+          <p class="panel-sub">External referrers on page views.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Referrer</th><th class="num-col">Page views</th></tr>
+              </thead>
+              <tbody id="referrer-rows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
         <h2>Waitlist</h2>
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>#</th><th>Email</th><th>Signed up</th></tr>
+              <tr><th>#</th><th>Email</th><th>Source</th><th>Signed up</th></tr>
             </thead>
             <tbody id="rows"></tbody>
           </table>

@@ -123,8 +123,47 @@
   }
   requestAnimationFrame(frame);
 
-  /* ================= waitlist logic ================= */
+  /* ================= lightweight analytics ================= */
+  // First-touch attribution for this browser session: UTM params (or ?source= /
+  // ?ref=), the external referrer and the landing path. Stored in sessionStorage
+  // so a signup a few minutes later is still credited to the original source.
   const API = window.API_BASE || '';
+  const ATTR_KEY = 'renika-attr';
+  const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+
+  function captureAttribution() {
+    let stored = null;
+    try { stored = JSON.parse(sessionStorage.getItem(ATTR_KEY) || 'null'); } catch { /* ignore */ }
+
+    const params = new URLSearchParams(location.search);
+    const fromUrl = {};
+    for (const k of UTM_KEYS) if (params.get(k)) fromUrl[k] = params.get(k);
+    const alias = params.get('source') || params.get('ref');
+    if (alias && !fromUrl.utm_source) fromUrl.utm_source = alias;
+
+    // A new tagged link overrides the stored session attribution.
+    if (stored && !Object.keys(fromUrl).length) return stored;
+
+    const ref = document.referrer && !document.referrer.startsWith(location.origin) ? document.referrer : '';
+    const attr = { ...fromUrl, referrer: ref, landing_path: location.pathname + location.search };
+    try { sessionStorage.setItem(ATTR_KEY, JSON.stringify(attr)); } catch { /* ignore */ }
+    return attr;
+  }
+  const attribution = captureAttribution();
+
+  function track(name) {
+    try {
+      fetch(API + '/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, attribution }),
+        keepalive: true,
+      }).catch(() => {});
+    } catch { /* analytics must never break the page */ }
+  }
+  track('page_view');
+
+  /* ================= waitlist logic ================= */
   const form = $('#waitlist-form');
   const emailInput = $('#email');
   const submitBtn = $('#submit-btn');
@@ -162,12 +201,18 @@
     requestAnimationFrame(tick);
   }
 
-  function showReveal({ position, email, already }) {
+  function showReveal({ position, email, already, confirmation = 'configured' }) {
     form.hidden = true;
     formError.textContent = '';
     revealLead.textContent = already ? "You're already" : 'You are';
     confirmLine.hidden = false;
     confirmEmail.textContent = email;
+    const message = already
+      ? 'Already registered: '
+      : confirmation === 'configured'
+        ? "We've sent a confirmation to "
+        : "We'll send launch updates to ";
+    confirmLine.replaceChildren(document.createTextNode(message), confirmEmail);
     reveal.hidden = false;
     countUp(positionNum, position);
     loadCount();
@@ -175,6 +220,7 @@
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    track('cta_click'); // primary CTA pressed (button click or Enter), before validation
     formError.textContent = '';
     form.classList.remove('error');
 
@@ -193,7 +239,7 @@
       const res = await fetch(API + '/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, attribution }),
       });
       const data = await res.json().catch(() => ({}));
 
@@ -206,7 +252,12 @@
         form.classList.add('error');
         return;
       }
-      showReveal({ position: data.position, email, already: false });
+      showReveal({
+        position: data.position,
+        email,
+        already: false,
+        confirmation: data.confirmation,
+      });
     } catch {
       formError.textContent = 'Network error — please try again.';
       form.classList.add('error');
@@ -220,4 +271,61 @@
     formError.textContent = '';
     form.classList.remove('error');
   });
+
+  /* ================= design enhancements ================= */
+
+  // 4. Scroll-triggered fade-ins
+  const fadeEls = document.querySelectorAll('.fade-in');
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  fadeEls.forEach((el) => fadeObserver.observe(el));
+
+  // Worked-example view: fires once when at least a third of the section is on screen.
+  const example = document.getElementById('worked-example');
+  if (example) {
+    const exampleObserver = new IntersectionObserver((entries) => {
+      if (entries.some((en) => en.isIntersecting)) {
+        track('example_view');
+        exampleObserver.disconnect();
+      }
+    }, { threshold: 0.33 });
+    exampleObserver.observe(example);
+  }
+
+  // 5. Magnetic button
+  const ctaBtn = document.getElementById('submit-btn');
+  if (ctaBtn) {
+    ctaBtn.addEventListener('mousemove', (e) => {
+      const rect = ctaBtn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      ctaBtn.style.transform = `translate(${x * 0.15}px, ${y * 0.2}px)`;
+    });
+    ctaBtn.addEventListener('mouseleave', () => {
+      ctaBtn.style.transform = '';
+    });
+  }
+
+  // 6. Parallax on floating kidneys
+  const floaters = document.querySelectorAll('.floater');
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        floaters.forEach((el, i) => {
+          const speed = 0.02 + (i % 3) * 0.015;
+          el.style.translate = `0 ${scrollY * speed}px`;
+        });
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
 })();

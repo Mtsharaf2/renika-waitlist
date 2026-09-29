@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>RENiKA — Where renal evidence meets practice</title>
-  <meta name="description" content="RENiKA is coming soon. Reserve your place on the waitlist.">
+  <title>RENiKA — Deterministic, auditable CKD decision support</title>
+  <meta name="description" content="RENiKA is guideline-grounded clinical decision support for nephrologists and clinicians managing CKD. Every recommendation shows its rule, inputs, guideline version and citation (KDIGO, ESC/ERA). Join the waitlist.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='38' fill='%23F26B7A'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,6 +82,8 @@
   <main class="hero">
     <div class="stage-wrap">
       <div class="stage">
+        <div class="stage-sheen"></div>
+        <div class="stage-side-btn"></div>
         <svg id="svg" viewBox="0 0 600 1000" role="img" aria-label="A small kidney draws the letter R, RENiKA slides in, and the kidney lands as the dot of the i.">
           <g id="word" transform="translate(72 450)" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
             <g id="R">
@@ -106,9 +108,15 @@
     </div>
 
     <section class="content">
-      <p class="eyebrow">Coming soon</p>
-      <h1 class="tagline">Where renal evidence <em>meets</em> practice.</h1>
-      <p class="sub">RENiKA is clinical decision support for nephrologists — turning the latest renal evidence into answers at the point of care. Reserve your place at the front of the line.</p>
+      <p class="eyebrow">Coming soon · For nephrologists &amp; CKD clinicians</p>
+      <h1 class="tagline">CKD decision support that <em>shows its work.</em></h1>
+      <p class="sub">RENiKA is deterministic, auditable decision support for clinicians managing chronic kidney disease. Every recommendation is grounded in KDIGO and ESC/ERA guidelines and shows the rule it fired, the inputs it used, the guideline version and the citation — no black box, no generated text.</p>
+      <ul class="proof" aria-label="What every recommendation shows">
+        <li>Rule</li>
+        <li>Inputs</li>
+        <li>Guideline version</li>
+        <li>Citation</li>
+      </ul>
 
       <form id="waitlist-form" class="waitlist-form" novalidate>
         <input id="email" type="email" placeholder="you@hospital.org" autocomplete="email" required aria-label="Email address">
@@ -124,9 +132,50 @@
       </div>
 
       <p class="counter"><strong id="count">—</strong> people already in line</p>
-      <p class="fine">No spam. One email when we launch.</p>
+      <p class="fine">No spam. One email when we launch. <a class="see-example" href="#worked-example">See a worked example ↓</a></p>
     </section>
   </main>
+
+  <section class="example fade-in" id="worked-example" aria-labelledby="example-title">
+    <div class="example-head">
+      <p class="eyebrow">Worked example</p>
+      <h2 id="example-title">One case, traced <em>end to end.</em></h2>
+      <p class="example-intro">This is how RENiKA presents a recommendation: the inputs go in, a named rule fires, and the output arrives with the guideline version and citation attached — so it can be checked, audited and defended at the bedside.</p>
+    </div>
+
+    <ol class="trace">
+      <li class="trace-step">
+        <p class="step-label"><span class="step-num">1</span> Inputs</p>
+        <dl class="inputs">
+          <div><dt>Patient</dt><dd>62-year-old with type 2 diabetes, BP 134/82 mmHg</dd></div>
+          <div><dt>eGFR (CKD-EPI 2021)</dt><dd>38 mL/min/1.73 m², stable across two readings &gt; 90 days apart</dd></div>
+          <div><dt>Urine ACR</dt><dd>450 mg/g (≈ 51 mg/mmol)</dd></div>
+          <div><dt>Current therapy</dt><dd>Metformin, ramipril at maximum tolerated dose; no SGLT2 inhibitor</dd></div>
+        </dl>
+      </li>
+
+      <li class="trace-step">
+        <p class="step-label"><span class="step-num">2</span> Rule</p>
+        <code class="rule-id">CKD.STAGE.CGA → CKD.T2D.SGLT2I.EGFR≥20</code>
+        <p class="rule-text">eGFR 30–44 → <strong>G3b</strong>. ACR &gt; 300 mg/g → <strong>A3</strong>. Classified <strong>CKD G3b A3</strong> (very high risk). Condition <em>type 2 diabetes AND CKD AND eGFR ≥ 20</em> is satisfied and no exclusion (type 1 diabetes, kidney transplant, dialysis) applies — the SGLT2 inhibitor rule fires.</p>
+      </li>
+
+      <li class="trace-step">
+        <p class="step-label"><span class="step-num">3</span> Recommendation</p>
+        <p class="rec">Start an SGLT2 inhibitor (e.g. dapagliflozin 10 mg or empagliflozin 10 mg once daily) alongside the existing RAS inhibitor. Once started, continuing is reasonable even if eGFR later falls below 20, unless not tolerated or kidney replacement therapy begins.</p>
+        <p class="rec-grade"><span>Strength 1 — strong</span><span>Evidence A — high</span></p>
+      </li>
+
+      <li class="trace-step">
+        <p class="step-label"><span class="step-num">4</span> Citation</p>
+        <p class="cite">KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease — Recommendation 3.7.1 and Practice Point 3.7.1; CGA staging, Section 1.2. <em>Kidney Int.</em> 2024;105(4S):S117–S314.</p>
+        <p class="cite cite-secondary">Corroborating: ESC 2023 Guidelines for the management of cardiovascular disease in patients with diabetes — SGLT2 inhibitor in T2D with CKD, Class I, Level A.</p>
+        <p class="version"><span>Guideline version</span> KDIGO CKD 2024 (April 2024)</p>
+      </li>
+    </ol>
+
+    <p class="disclaimer">Illustrative example only. This is a fictional case used to demonstrate how RENiKA structures its output; it is not medical advice and must not be used to make decisions about real patients. Always apply clinical judgement and the current version of the relevant guideline.</p>
+  </section>
 
   <footer class="site-footer">
     <span>© 2026 RENiKA</span>

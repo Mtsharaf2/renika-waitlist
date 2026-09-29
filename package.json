@@ -6,10 +6,17 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "cf:dev": "wrangler dev --port 8788",
+    "cf:migrate:local": "wrangler d1 migrations apply DB --local",
+    "cf:migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "cf:deploy": "wrangler deploy"
   },
   "dependencies": {
     "express": "^4.21.2",
-    "nodemailer": "^6.9.16"
+    "nodemailer": "^10.0.12"
+  },
+  "devDependencies": {
+    "wrangler": "^4.143.1"
   }
 }
